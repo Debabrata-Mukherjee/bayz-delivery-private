@@ -2,12 +2,16 @@ package com.bayzdelivery.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.bayzdelivery.repositories.PersonRepository;
+import com.bayzdelivery.validators.PersonValidator;
+import com.bayzdelivery.dtos.PersonDTO;
 import com.bayzdelivery.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -15,20 +19,43 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     PersonRepository personRepository;
 
+    @Autowired
+    PersonValidator personValidator;
+
     @Override
-    public List<Person> getAll() {
+    public List<PersonDTO> getAll() {
         List<Person> personList = new ArrayList<>();
-        personRepository.findAll().forEach(personList::add);
-        return personList;
+        personRepository.findAll().forEach(personList::add); 
+        return personList.stream()
+            .map(PersonDTO::fromEntity)
+            .toList();
     }
 
-    public Person save(Person p) {
-        return personRepository.save(p);
-    }
+    public PersonDTO save(PersonDTO p) {
+    personValidator.checkIfPersonValid(p);
+    // Convert DTO to Entity
+    Person personEntity = p.toEntity();
 
-    @Override
-    public Person findById(Long personId) {
-        Optional<Person> dbPerson = personRepository.findById(personId);
-        return dbPerson.orElse(null);
+    try {
+        Person savedPerson = personRepository.save(personEntity);
+
+        return PersonDTO.fromEntity(savedPerson);
+
+    } catch (DataIntegrityViolationException e) {
+        if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
+            throw new IllegalArgumentException("Email or Registration Number already exists.");
+        }
+        throw new RuntimeException("Database error occurred while saving the user.", e);
+
+    } catch (TransactionSystemException e) {
+        throw new RuntimeException("Invalid data format or missing required fields.", e);
     }
+}
+
+@Override
+public PersonDTO findById(Long personId) {
+    return personRepository.findById(personId)
+            .map(PersonDTO::fromEntity)
+            .orElseThrow(() -> new ResourceNotFoundException("Person with ID " + personId + " not found"));
+}
 }
