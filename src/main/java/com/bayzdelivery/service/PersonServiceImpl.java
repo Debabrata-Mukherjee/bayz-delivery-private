@@ -45,7 +45,7 @@ public class PersonServiceImpl implements PersonService {
         if (e.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
             throw new IllegalArgumentException("Email or Registration Number already exists.");
         }
-        throw new RuntimeException("Database error occurred while saving the user.", e);
+        throw new IllegalArgumentException("Database error occurred while saving the user.", e);
 
     } catch (TransactionSystemException e) {
         throw new RuntimeException("Invalid data format or missing required fields.", e);
