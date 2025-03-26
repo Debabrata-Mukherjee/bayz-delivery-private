@@ -8,6 +8,7 @@
             <column name="name" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(255)"/>
             <column name="registration_number" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(50)"/>
         </createTable>
         <createTable tableName="delivery">
             <column autoIncrement="true" name="id" type="BIGINT">

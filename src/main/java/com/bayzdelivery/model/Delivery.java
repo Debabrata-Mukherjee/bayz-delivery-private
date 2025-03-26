@@ -1,7 +1,8 @@
 package com.bayzdelivery.model;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,11 +25,11 @@ public class Delivery implements Serializable{
 
   @NotNull
   @Column(name = "start_time")
-  Instant startTime;
+  LocalDateTime startTime;
 
   @NotNull
   @Column(name = "end_time")
-  Instant endTime;
+  LocalDateTime endTime;
 
   @Column(name = "distance")
   Long distance;
@@ -36,8 +37,8 @@ public class Delivery implements Serializable{
   @Column(name = "price")
   Long price;
 
-  @Column(name = "comission")
-  Long comission;
+  @Column(name = "commission")
+  Long commission;
 
   @ManyToOne
   @JoinColumn(name = "delivery_man_id", referencedColumnName = "id")
@@ -55,19 +56,19 @@ public class Delivery implements Serializable{
     this.id = id;
   }
 
-  public Instant getStartTime() {
+  public LocalDateTime getStartTime() {
     return startTime;
   }
 
-  public void setStartTime(Instant startTime) {
+  public void setStartTime(LocalDateTime startTime) {
     this.startTime = startTime;
   }
 
-  public Instant getEndTime() {
+  public LocalDateTime getEndTime() {
     return endTime;
   }
 
-  public void setEndTime(Instant endTime) {
+  public void setEndTime(LocalDateTime endTime) {
     this.endTime = endTime;
   }
 
@@ -87,12 +88,12 @@ public class Delivery implements Serializable{
     this.price = price;
   }
 
-  public Long getComission() {
-    return comission;
+  public Long getCommission() {
+    return commission;
   }
 
-  public void setComission(Long comission) {
-    this.comission = comission;
+  public void setCommission(Long commission) {
+    this.commission = commission;
   }
 
   public Person getDeliveryMan() {

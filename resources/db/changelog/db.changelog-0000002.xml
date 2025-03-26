@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <!-- Pre-conditions to check if the unique index exists before creating -->
+    <preConditions onFail="WARN">
+        <not>
+            <indexExists tableName="person" indexName="uq_person_email"/>
+        </not>
+        <not>
+            <indexExists tableName="person" indexName="uq_person_registration_number"/>
+        </not>
+    </preConditions>
+
+    <changeSet id="20250325-01" author="pallabi">
+        <comment>Adding unique constraints on person.email and person.registration_number</comment>
+
+        <!-- Adding unique constraint for email -->
+        <addUniqueConstraint 
+            tableName="person" 
+            columnNames="email" 
+            constraintName="uq_person_email"/>
+
+        <!-- Adding unique constraint for registration_number -->
+        <addUniqueConstraint 
+            tableName="person" 
+            columnNames="registration_number" 
+            constraintName="uq_person_registration_number"/>
+    </changeSet>
+
+</databaseChangeLog>

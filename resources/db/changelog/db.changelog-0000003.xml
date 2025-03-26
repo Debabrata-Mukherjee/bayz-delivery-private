@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="20250326-add-commission-to-delivery" author="your-name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="delivery" columnName="commission"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="delivery">
+            <column name="commission" type="BIGINT" defaultValue="0" remarks="Stores the commission earned per delivery"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
