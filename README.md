@@ -1,3 +1,13 @@
+Commands to run :- 
+
+python3 scripts/PersonGenerator.py
+python3 scripts/DeliveryGenerator.py
+./gradlew bootRun
+
+
+
+
+
 # Backend Engineer Assignment
 In this assignment, you are expected to make changes to an existing API backend code. Please read the constraints and tasks carefully, make your changes, and follow submission guideline at the bottom of the page.
 
